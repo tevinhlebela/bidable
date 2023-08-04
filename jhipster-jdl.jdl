@@ -1,0 +1,49 @@
+
+entity Product {
+	name String required min(2) max(50)
+    description String required min(5) max(200)
+    minPrice Float required min(1)
+    startDate ZonedDateTime required
+    endDate ZonedDateTime required
+    streedAddress String required min(2) max(100)
+    suburb String required min(2) max(100)
+    city String required min(2) max(100)
+    postalCode String required min(4) max(10)
+}
+
+entity Image {
+	uploadDate ZonedDateTime required
+    image ImageBlob required
+    description String
+    name String
+}
+
+entity Currency {
+	name String required min(3) max(5)
+    description String required min(3) max(50)
+}
+
+entity User
+
+entity Bid {
+    price Float required min(1)
+    time ZonedDateTime required
+}
+
+relationship ManyToOne {
+	Product{currency} to Currency
+    Bid{product} to Product
+    Image{image} to Product
+}
+
+relationship OneToOne {
+	Bid{bidder} to User
+    Product{newOwner} to User
+}
+
+relationship OneToMany {
+ Product{owner} to User
+}
+
+paginate all with infinite-scroll except User
+service all with serviceImpl except User
